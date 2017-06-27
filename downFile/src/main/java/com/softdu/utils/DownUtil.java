@@ -272,6 +272,7 @@ public class DownUtil {
         }
     }
 
+
     /**
      * 计算需要的线程数量，每个线程下载 1024 * 1024 * 3
      *
@@ -279,7 +280,12 @@ public class DownUtil {
      * @return
      */
     int getThreadCount(long fileLength) {
-        return (int) (fileLength / (1024 * 1024 * 3));
+        int threadCount = (int) (fileLength / (1024 * 1024 * 3));
+        if(threadCount == 0){
+            return 1;
+        }else {
+            return threadCount;
+        }
     }
 
     /**
