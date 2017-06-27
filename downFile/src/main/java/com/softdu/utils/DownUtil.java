@@ -93,6 +93,7 @@ public class DownUtil {
             }
         });
 
+        //将下载快照保存在meta临时文件中，以便重新下载时继续上次下载的位置继续下载
         executor.submit(new Runnable() {
             @Override
             public void run() {
