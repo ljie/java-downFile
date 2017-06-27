@@ -18,7 +18,7 @@ import java.util.concurrent.*;
  */
 @Slf4j
 public class DownUtil {
-    
+
     public volatile DownInfo downInfo;
     ExecutorService executor = Executors.newFixedThreadPool(10); //这个线程不宜太大
     private volatile Set<String> failThreadSet = new TreeSet();
@@ -203,7 +203,7 @@ public class DownUtil {
                 IOUtils.copy(fileInputStream, out);
                 downInfo = JSON.parseObject(out.toByteArray(), DownInfo.class);
             }
-            File downFile = new File(metaPath);
+            File downFile = new File(downInfo.getFilePath());
             if (!downFile.exists()) {
                 randomAccessFile = new RandomAccessFile(downFile, "rw");
                 randomAccessFile.setLength(downInfo.getFileLength());
