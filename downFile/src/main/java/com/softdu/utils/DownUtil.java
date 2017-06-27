@@ -297,7 +297,7 @@ public class DownUtil {
             Piece piece = new Piece();
             piece.setPieceStartPostion(i * pieceSize);
             piece.setRangPation(i * pieceSize);
-            if (i + 1 == threadCount) {
+            if (i + 1 == threadCount) {//最后一个线程下载的结束位置就是文件的大小
                 piece.setPieceEndPosition(fileLength);
             } else {
                 piece.setPieceEndPosition((i + 1) * pieceSize - 1);
@@ -342,6 +342,7 @@ public class DownUtil {
                     connection.setConnectTimeout(10000);
                     connection.setRequestMethod("GET");
                     connection.setReadTimeout(10000);
+                    //设置http拉取文件的位置                               开始          -        结束
                     connection.setRequestProperty("Range", "bytes=" + rangPation + "-" + pieceEndPosition);
                     Integer code = connection.getResponseCode();
                     if (code == 206) {//200：请求全部资源成功， 206代表部分资源请求成功
@@ -355,6 +356,7 @@ public class DownUtil {
                             randomAccessFile.write(buffer, 0, length);
                             rangPation += length;
                             downSize += length;
+                            //更改内存中的下载信息
                             Piece piece = downInfo.getPices().get(threadIndex);
                             piece.setRangPation(rangPation);
                             piece.setDownSize(downSize);
@@ -365,13 +367,14 @@ public class DownUtil {
                         throw new Exception("http status error" + code);
                     }
                 }
+                //记录下载成功的线程
                 complieTreadSet.add(threadIndex);
 
             } catch (Exception e) {
                 log.error(this.getClass().getName(), e);
-                //记录失败次数
+                //记录失败的线程
                 failThreadSet.add(this.threadIndex);
-            } finally {
+            } finally { //释放资源
                 if (randomAccessFile != null) {
                     try {
                         randomAccessFile.close();
