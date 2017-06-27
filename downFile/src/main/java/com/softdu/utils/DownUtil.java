@@ -116,7 +116,7 @@ public class DownUtil {
                 }
             }
         });
-
+        //启动下载文件
         for (String threadId : downInfo.getPices().keySet()) {
             Piece piece = downInfo.getPices().get(threadId);
             Future future = executor.submit(new DownThread(piece.getPieceStartPostion(), piece.getPieceEndPosition(), piece.getStatus(),
