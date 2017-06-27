@@ -7,6 +7,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -177,7 +178,7 @@ public class DownUtil {
             /**
              * 下载信息，保存一个临时文件，零时文件命名  文件名称 + 网络地址md5
              */
-            String downMetaInfoName = fileName + "_" + Md5.md5(fileUrl).toLowerCase();
+            String downMetaInfoName = fileName + "_" + URLEncoder.encode(Md5.md5(fileUrl).toLowerCase(),"utf-8");
             metaPath = saveFilePath + File.separator + downMetaInfoName + ".meta";
             downInfo.setMetaPath(metaPath);
             File metaFile = new File(metaPath);
