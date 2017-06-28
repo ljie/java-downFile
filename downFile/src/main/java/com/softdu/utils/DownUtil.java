@@ -170,9 +170,9 @@ public class DownUtil {
             connection.setRequestMethod("GET");
             connection.setReadTimeout(10000);
             long fileLength = connection.getContentLength();
-            if (fileLength == 0) {
-                log.error(metaPath + " network error , please try  again latter");
-                return;
+            if (fileLength <= 0 ) { //判断服务器文件大小是否小于0
+                log.error(fileUrl + " network error , please try  again latter");
+                throw new Exception("network error , please try  again latter");
             }
             downInfo = new DownInfo();
             /**
